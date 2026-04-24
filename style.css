@@ -1,0 +1,252 @@
+/* ============================================================
+   LANDING PAGE — password gate overlay
+   ============================================================ */
+
+#landing {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: linear-gradient(160deg, #faf6f0 0%, #f0e8dc 55%, #e8d4c4 100%);
+  transition: opacity 1s ease, visibility 1s ease;
+  overflow: hidden;
+}
+
+#landing.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Decorative ambient glow blobs */
+#landing::before {
+  content: '';
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,130,106,0.15) 0%, transparent 70%);
+  top: -120px;
+  right: -120px;
+  pointer-events: none;
+}
+
+#landing::after {
+  content: '';
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,130,106,0.10) 0%, transparent 70%);
+  bottom: -80px;
+  left: -60px;
+  pointer-events: none;
+}
+
+/* Text elements */
+.lp-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #c9826a;
+  margin-bottom: 1.4rem;
+  opacity: 0;
+  animation: lpFadeUp 1s ease 0.2s forwards;
+}
+
+.lp-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 300;
+  font-style: italic;
+  color: #7a4a3a;
+  line-height: 1.05;
+  margin-bottom: 0.4rem;
+  opacity: 0;
+  animation: lpFadeUp 1s ease 0.45s forwards;
+}
+
+.lp-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  font-style: italic;
+  color: #8a6a5a;
+  margin-bottom: 0;
+  opacity: 0;
+  animation: lpFadeUp 1s ease 0.65s forwards;
+}
+
+/* Vertical divider line */
+.lp-line {
+  width: 1px;
+  height: 55px;
+  background: linear-gradient(to bottom, transparent, #c9826a, transparent);
+  margin: 2rem 0;
+  opacity: 0;
+  animation: lpFadeUp 1s ease 0.85s forwards;
+}
+
+/* Password form group */
+.lp-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  animation: lpFadeUp 1s ease 1s forwards;
+}
+
+.lp-hint {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 300;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #b09080;
+  margin-bottom: 0.1rem;
+}
+
+/* Input wrapper */
+.lp-input-wrap {
+  position: relative;
+  width: 240px;
+}
+
+.lp-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #c9826a;
+  padding: 0.65rem 0.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  color: #3a2a22;
+  text-align: center;
+  outline: none;
+  letter-spacing: 0.12em;
+  transition: border-color 0.3s ease;
+}
+
+.lp-input::placeholder {
+  color: #c4a090;
+  font-style: italic;
+}
+
+.lp-input:focus {
+  border-color: #7a4a3a;
+}
+
+/* Submit button */
+.lp-btn {
+  margin-top: 0.6rem;
+  background: none;
+  border: 1px solid #c9826a;
+  color: #7a4a3a;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  padding: 0.75rem 2.4rem;
+  cursor: pointer;
+  border-radius: 1px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.lp-btn:hover {
+  background: #c9826a;
+  color: #fff;
+}
+
+.lp-btn:active {
+  transform: scale(0.98);
+}
+
+/* Error message */
+.lp-err {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #c9826a;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  min-height: 1.2em;
+}
+
+.lp-err.show {
+  opacity: 1;
+}
+
+/* Landing page floating petals container */
+.lp-petals-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure form content is above petals */
+.lp-eyebrow,
+.lp-title,
+.lp-sub,
+.lp-line,
+.lp-form {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   MUSIC TOGGLE — floating button (bottom-right)
+   ============================================================ */
+
+#music-toggle {
+  display: none; /* shown via JS after unlock */
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 888;
+  background: rgba(250, 246, 240, 0.88);
+  border: 1px solid #e8c4b0;
+  color: #7a4a3a;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  border-radius: 2px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+#music-toggle:hover {
+  background: #f0e8dc;
+  border-color: #c9826a;
+}
+
+/* ============================================================
+   SHARED ANIMATION
+   ============================================================ */
+
+@keyframes lpFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
